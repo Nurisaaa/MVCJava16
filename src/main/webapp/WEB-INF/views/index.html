@@ -17,6 +17,8 @@
         <th scope="col">Surname</th>
         <th scope="col">Email</th>
         <th scope="col">phone number</th>
+        <th scope="col">delete</th>
+        <th scope="col">edit</th>
     </tr>
     </thead>
     <tbody class="table-group-divider">
@@ -25,8 +27,17 @@
         <td th:text="${u.getLastName()}"></td>
         <td th:text="${u.getEmail()}"></td>
         <td th:text="${u.getPhoneNumber()}"></td>
+        <td>
+            <a th:href="@{/users/delete/{id}(id=${u.id})}">delete</a>
+        </td>
+        <td>
+            <a th:href="@{/users/edit/{id}(id=${u.id})}">edit</a>
+        </td>
     </tr>
     </tbody>
 </table>
+<button>
+    <a th:href="@{/users/create}">+ Create User</a>
+</button>
 </body>
 </html>

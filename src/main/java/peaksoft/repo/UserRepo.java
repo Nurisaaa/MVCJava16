@@ -14,6 +14,40 @@ public class UserRepo {
     private final EntityManager em;
 
     public List<User> findAll() {
-        return em.createQuery("select u from User u", User.class).getResultList();
+        em.getTransaction().begin();
+        List<User> users = em.createQuery("select u from User u", User.class).getResultList();
+        em.getTransaction().commit();
+        return users;
+    }
+
+    public void delete(Long id) {
+        em.getTransaction().begin();
+        User user = em.find(User.class,id);
+        em.remove(user);
+        em.getTransaction().commit();
+    }
+
+    public void save(User user) {
+        em.getTransaction().begin();
+        em.persist(user);
+        em.getTransaction().commit();
+    }
+
+    public User findById(Long id) {
+        em.getTransaction().begin();
+        User user = em.find(User.class,id);
+        em.getTransaction().commit();
+        return user;
+    }
+
+    public void update(User user, Long id) {
+        em.getTransaction().begin();
+        User editedUser = em.find(User.class, id);
+        editedUser.setFirstName(user.getFirstName());
+        editedUser.setLastName(user.getLastName());
+        editedUser.setEmail(user.getEmail());
+        editedUser.setPassword(user.getPassword());
+        em.merge(editedUser);
+        em.getTransaction().commit();
     }
 }
