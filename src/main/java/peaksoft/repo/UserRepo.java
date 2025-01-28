@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import peaksoft.entities.Book;
 import peaksoft.entities.User;
 
 import java.util.List;
@@ -48,6 +49,15 @@ public class UserRepo {
         editedUser.setEmail(user.getEmail());
         editedUser.setPassword(user.getPassword());
         em.merge(editedUser);
+        em.getTransaction().commit();
+    }
+
+    public void assignBook(Long id, Long bookId) {
+        em.getTransaction().begin();
+        User user = em.find(User.class,id);
+        Book book = em.find(Book.class,bookId);
+        book.setUser(user);
+        user.getBooks().add(book);
         em.getTransaction().commit();
     }
 }

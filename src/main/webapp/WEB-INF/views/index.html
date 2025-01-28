@@ -16,9 +16,9 @@
         <th scope="col">First Name</th>
         <th scope="col">Surname</th>
         <th scope="col">Email</th>
-        <th scope="col">phone number</th>
         <th scope="col">delete</th>
         <th scope="col">edit</th>
+        <th scope="col">books</th>
     </tr>
     </thead>
     <tbody class="table-group-divider">
@@ -26,12 +26,22 @@
         <td th:text="${u.getFirstName()}"></td>
         <td th:text="${u.getLastName()}"></td>
         <td th:text="${u.getEmail()}"></td>
-        <td th:text="${u.getPhoneNumber()}"></td>
         <td>
             <a th:href="@{/users/delete/{id}(id=${u.id})}">delete</a>
         </td>
         <td>
             <a th:href="@{/users/edit/{id}(id=${u.id})}">edit</a>
+        </td>
+        <td>
+            <form th:action="@{/users/assign/{id}(id=${u.id})}" method="post">
+                <label>
+                    <select name="bookId">
+                        <option th:each="book :${books}" th:value="${book.id}" th:text="${book.name}">
+                        </option>
+                    </select>
+                </label>
+                <button type="submit">submit</button>
+            </form>
         </td>
     </tr>
     </tbody>

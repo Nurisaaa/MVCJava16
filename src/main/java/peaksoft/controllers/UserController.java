@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import peaksoft.entities.User;
+import peaksoft.service.BookService;
 import peaksoft.service.UserService;
 
 @Controller
@@ -12,10 +13,12 @@ import peaksoft.service.UserService;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final BookService bookService;
 
     @GetMapping
     public String get(Model model){
         model.addAttribute("users", userService.findAll());
+        model.addAttribute("books", bookService.getBooksWithoutUser());
         return "/index";
     }
 
@@ -46,6 +49,12 @@ public class UserController {
     @PostMapping("/update/{id}")
     public String update(@ModelAttribute User user , @PathVariable("id") Long id){
         userService.update(user, id);
+        return "redirect:/users";
+    }
+
+    @PostMapping("/assign/{id}")
+    public String assignBook(@PathVariable("id") Long id, @RequestParam("bookId") Long bookId) {
+        bookService.assignBook(id,bookId);
         return "redirect:/users";
     }
 
